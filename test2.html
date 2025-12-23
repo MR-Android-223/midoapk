@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ميدو ملك البسترما</title>
+  <!-- أيقونة الموقع -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    /* === نفس التنسيقات التي أرسلتها مع بعض التحسينات === */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo', sans-serif; }
+    body { background-color:#fff3e0; color:#3e2723; line-height:1.6; padding-bottom: 80px; }
+    
+    header { background-color:#bf360c; color:#fff; padding:25px 0; text-align:center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
+    header h1 { font-size:2.2em; margin-bottom: 5px; }
+    
+    .app-download-btn {
+      display: inline-block; margin-top: 15px; background-color: #3e2723; color: #fff;
+      padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: bold;
+      font-size: 1.1em; border: 2px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s, background 0.3s; animation: pulseBtn 2s infinite; 
+    }
+    .app-download-btn:hover { background-color: #5d4037; transform: scale(1.05); }
+    .app-download-btn i { margin-left: 8px; font-size: 1.2em; }
+
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+
+    .category-title {
+      background: #3e2723; color: #fff; display: inline-block; padding: 10px 30px;
+      border-radius: 30px; margin: 40px auto 20px; font-size: 1.5em; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    
+    .products { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-bottom: 30px; padding: 0 15px; }
+    
+    .product { 
+      background: #fff; border: 2px solid #bf360c; border-radius: 25px; padding: 15px; 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s;
+      width: 100%; position: relative; overflow: hidden;
+    }
+    .product:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(191, 54, 12, 0.2); }
+    .product img { 
+      width:100%; height:200px; object-fit: cover; border-radius: 15px; 
+      margin-bottom: 10px; background-color: #fffbf5;
+    } 
+    .product h3 { margin-top:5px; font-size: 1.4em; font-weight: 800; color: #3e2723; }
+    
+    .kilo-item {
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      min-height: 180px; border: 3px double #bf360c; text-align: center;
+    }
+    .kilo-item h3 { font-size: 1.6em; margin-bottom: 10px; }
+
+    .price-box {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff3e0; padding: 8px 12px; border-radius: 15px;
+      margin: 10px 0 15px; font-weight: 900; border: 1px dashed #bf360c; width: 100%;
+    }
+    .price-lbp { color: #bf360c; font-size: 1.1em; }
+    .price-usd { color: #2e7d32; font-size: 1.1em; direction: ltr; }
+
+    @media (min-width: 768px) {
+      #sandwichesContainer .product, #drinksContainer .product { width: calc(33.333% - 25px); max-width: 320px; }
+      #kiloContainer .product { width: calc(50% - 25px); max-width: 400px; }
+    }
+
+    .add-btn {
+      background: #3e2723; color: #fff; border: none; padding: 12px; 
+      border-radius: 50px; width: 100%; cursor: pointer; font-size: 1.1em;
+      font-weight: bold; transition: background 0.2s, transform 0.1s;
+    }
+    .add-btn:active { transform: scale(0.95); }
+
+    /* Modals */
+    .modal { display:none; position:fixed; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); backdrop-filter: blur(4px); overflow: auto; z-index: 3000; }
+    .modal-content { 
+      background-color:#fff; margin:15% auto; padding:25px; 
+      border-radius:20px; width:85%; max-width:400px; position: relative; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid #bf360c;
+    }
+    .close-btn { float:left; font-size:28px; cursor:pointer; color:#999; }
+    
+    .weight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+    .weight-option {
+      background: #fff8e1; border: 2px solid #bf360c; color: #3e2723;
+      padding: 15px; border-radius: 15px; cursor: pointer; font-weight: bold; transition: background 0.2s;
+    }
+    .weight-option:hover { background: #bf360c; color: #fff; }
+
+    .ingredient-option {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px; border-bottom: 1px solid #eee; font-size: 1.1em; text-align: right;
+    }
+    .ingredient-option input[type="checkbox"] { transform: scale(1.5); accent-color: #2e7d32; }
+    
+    /* Cart */
+    .cart-float {
+      position: fixed; bottom: 20px; right: 20px; background-color: #bf360c; color: #fff;
+      width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; cursor: pointer; z-index: 2000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s;
+    }
+    @keyframes cartPulse {
+      0% { transform: scale(1); background-color: #bf360c; }
+      50% { transform: scale(1.3) rotate(-10deg); background-color: #2e7d32; } 
+      100% { transform: scale(1); background-color: #bf360c; }
+    }
+    .cart-added-animation { animation: cartPulse 0.4s ease-in-out; }
+
+    #cartCount {
+      position: absolute; top: -5px; left: -5px; background: #ffeb3b; color: #bf360c; font-size: 14px;
+      width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #bf360c;
+    }
+    .cart-item { border-bottom: 1px dashed #ccc; padding: 10px 0; text-align: right; }
+    .cart-notes { font-size: 0.85em; color: #d32f2f; display: block; margin-top: 3px; }
+    
+    .whatsapp-checkout {
+      background: #25d366; color: white; border: none; padding: 15px; 
+      width: 100%; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 15px;
+    }
+    .clear-cart-btn {
+      background: #c62828; color: white; border: none; padding: 8px 15px;
+      border-radius: 10px; cursor: pointer; font-size: 0.9em; margin-top: 10px;
+    }
+
+    /* Contact */
+    .contact-section { background: #fff; padding: 40px 20px; text-align: center; margin-top: 40px; border-top: 5px solid #bf360c; }
+    .contact-btn {
+      display: block; width: 100%; max-width: 350px; margin: 10px auto;
+      padding: 15px; color: #fff; border-radius: 10px; text-decoration: none;
+      font-weight: bold; font-size: 1.1em; transition: transform 0.2s;
+    }
+    .contact-btn:hover { transform: scale(1.02); }
+    .btn-wa { background: #25d366; }
+    .btn-ph { background: #1565c0; }
+    
+    .welcome { padding:30px 20px; text-align:center; background: linear-gradient(to bottom, #ffe9c4, #fff3e0); border-bottom:3px solid #bf360c; }
+    #counter { margin-top:15px; font-weight:bold; color:#bf360c; font-size:18px; background: rgba(255,255,255,0.5); padding: 5px; border-radius: 10px; display: inline-block; }
+    
+    .text-center { text-align: center; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>ميدو ملك البسترما 👑</h1>
+  <p>أطيب بسترما في لبنان</p>
+  <a href="#" class="app-download-btn"><i class="fab fa-android"></i> حمل التطبيق الآن</a>
+</header>
+
+<div class="welcome">
+  <h2>أهلاً بك يا غالي! ❤️</h2>
+  <p>اطلب أونلاين ويوصلك لعندك</p>
+  <div id="counter">عدد الزوار: <span id="visitCount">1254</span></div>
+</div>
+
+<!-- === 1. نافذة تخصيص السندويش === -->
+<div id="customizeModal" class="modal">
+  <div class="modal-content" style="text-align: right;">
+    <span class="close-btn" onclick="closeModal('customizeModal')">×</span>
+    <h3 style="color:#bf360c; text-align:center;">تعديل السندويش 🥙</h3>
+    <p style="text-align:center; margin-bottom:15px; font-size:0.9em; color:#666;">شيل الصح عن المكون اللي ما بدك ياه</p>
+    <div id="ingredientsList">
+        <!-- سيتم تعبئته بالجافاسكريبت -->
+    </div>
+    <button onclick="confirmAddToCart()" class="add-btn" style="margin-top:20px; background:#2e7d32;">
+      تأكيد وإضافة للسلة ✅
+    </button>
+  </div>
+</div>
+
+<!-- === 2. نافذة اختيار وزن الكيلو (الجزء الذي كان ناقصاً) === -->
+<div id="weightModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('weightModal')">×</span>
+      <h3 style="color:#bf360c;">اختر الوزن ⚖️</h3>
+      <div class="weight-grid">
+        <div class="weight-option" onclick="addKiloToCart(0.25)">وقية (250g)</div>
+        <div class="weight-option" onclick="addKiloToCart(0.5)">نص كيلو (500g)</div>
+        <div class="weight-option" onclick="addKiloToCart(1)">كيلو (1000g)</div>
+        <div class="weight-option" onclick="addKiloToCart(1.5)">كيلو ونص</div>
+      </div>
+    </div>
+</div>
+
+<!-- === 3. نافذة السلة === -->
+<div id="cartModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('cartModal')">×</span>
+        <h3 style="color:#bf360c;">سلة المشتريات 🛒</h3>
+        <div id="cartItems" style="max-height: 300px; overflow-y: auto; margin-bottom: 15px;">
+            <!-- العناصر ستظهر هنا -->
+            <p style="color:#777;">السلة فارغة حالياً</p>
+        </div>
+        <div style="border-top: 2px solid #eee; padding-top: 10px;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                <span>المجموع:</span>
+                <span id="cartTotal">0 $</span>
+            </div>
+        </div>
+        <button class="whatsapp-checkout" onclick="checkoutWhatsApp()">
+            <i class="fab fa-whatsapp"></i> إرسال الطلب واتساب
+        </button>
+        <button class="clear-cart-btn" onclick="clearCart()">تفريغ السلة</button>
+    </div>
+</div>
+
+<!-- === المحتوى الرئيسي === -->
+
+<div class="text-center">
+    <div class="category-title">سندويشات البسترما 🥙</div>
+</div>
+<div class="products" id="sandwichesContainer">
+    <!-- سيتم إضافة المنتجات هنا عبر JS -->
+</div>
+
+<div class="text-center">
+    <div class="category-title">بالكيلو (للمنزل) ⚖️</div>
+</div>
+<div class="products" id="kiloContainer">
+    <!-- منتجات الكيلو -->
+</div>
+
+<div class="text-center">
+    <div class="category-title">مشروبات 🥤</div>
+</div>
+<div class="products" id="drinksContainer">
+    <!-- المشروبات -->
+</div>
+
+<!-- === زر السلة العائم === -->
+<div class="cart-float" onclick="openModal('cartModal')">
+    <i class="fas fa-shopping-cart"></i>
+    <div id="cartCount">0</div>
+</div>
+
+<!-- === قسم التواصل === -->
+<div class="contact-section">
+    <h3>تواصل معنا</h3>
+    <p>ميدو ملك البسترما - الطعم الأصلي</p>
+    <br>
+    <a href="https://wa.me/96170000000" class="contact-btn btn-wa"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</a>
+    <a href="tel:+96170000000" class="contact-btn btn-ph"><i class="fas fa-phone"></i> اتصل بنا</a>
+</div>
+
+<!-- === JavaScript Logic === -->
+<script>
+    // === بيانات المنتجات ===
+    const products = {
+        sandwiches: [
+            { id: 1, name: "سندويش بسترما اكسترا", price: 6.00, img: "https://via.placeholder.com/300x200?text=Basterma+Sandwich", ingredients: ["بسترما", "كبيس", "بندورة", "نعنع", "مايونيز"] },
+            { id: 2, name: "سندويش بسترما بالجبنة", price: 7.50, img: "https://via.placeholder.com/300x200?text=Cheese+Basterma", ingredients: ["بسترما", "جبنة قشقوان", "كبيس", "بندورة"] },
+            { id: 3, name: "سندويش سجق", price: 5.50, img: "https://via.placeholder.com/300x200?text=Sujuk", ingredients: ["سجق", "ثوم", "كبيس", "بندورة"] }
+        ],
+        kilo: [
+            { id: 101, name: "بسترما أرمنية (شرائح)", price: 40.00 }, // سعر الكيلو
+            { id: 102, name: "سجق بلدي", price: 35.00 }
+        ],
+        drinks: [
+            { id: 201, name: "بيبسي", price: 1.00, img: "https://via.placeholder.com/300x200?text=Pepsi" },
+            { id: 202, name: "سفن أب", price: 1.00, img: "https://via.placeholder.com/300x200?text=7up" },
+            { id: 203, name: "عيران", price: 1.50, img: "https://via.placeholder.com/300x200?text=Ayran" }
+        ]
+    };
+
+    let cart = [];
+    let currentProduct = null; // للمنتج الذي يتم تعديله حالياً
+
+    // === عرض المنتجات عند التحميل ===
+    window.onload = function() {
+        renderProducts();
+        updateCartUI();
+    };
+
+    function renderProducts() {
+        // 1. السندويشات
+        const sandContainer = document.getElementById('sandwichesContainer');
+        products.sandwiches.forEach(p => {
+            sandContainer.innerHTML += `
+                <div class="product">
+                    <img src="${p.img}" alt="${p.name}">
+                    <h3>${p.name}</h3>
+                    <div class="price-box">
+                        <span class="price-usd">$${p.price.toFixed(2)}</span>
+                    </div>
+                    <button class="add-btn" onclick="openCustomizeModal(${p.id})">أضف للسلة +</button>
+                </div>
+            `;
+        });
+
+        // 2. الكيلو
+        const kiloContainer = document.getElementById('kiloContainer');
+        products.kilo.forEach(p => {
+            kiloContainer.innerHTML += `
+                <div class="product kilo-item">
+                    <h3>${p.name}</h3>
+                    <div class="price-box">
+                        <span class="price-usd">$${p.price.toFixed(2)} / Kg</span>
+                    </div>
+                    <button class="add-btn" onclick="openWeightModal(${p.id})">اختر الوزن</button>
+                </div>
+            `;
+        });
+
+        // 3. المشروبات
+        const drinkContainer = document.getElementById('drinksContainer');
+        products.drinks.forEach(p => {
+            drinkContainer.innerHTML += `
+                <div class="product">
+                    <img src="${p.img}" alt="${p.name}">
+                    <h3>${p.name}</h3>
+                    <div class="price-box">
+                        <span class="price-usd">$${p.price.toFixed(2)}</span>
+                    </div>
+                    <button class="add-btn" onclick="addToCartSimple(${p.id})">أضف للسلة +</button>
+                </div>
+            `;
+        });
+    }
+
+    // === إدارة النوافذ (Modals) ===
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+    }
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
+    // إغلاق النافذة عند النقر خارجها
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
+        }
+    }
+
+    // === منطق السندويشات (تخصيص) ===
+    function openCustomizeModal(id) {
+        currentProduct = products.sandwiches.find(p => p.id === id);
+        const list = document.getElementById('ingredientsList');
+        list.innerHTML = "";
+        
+        currentProduct.ingredients.forEach(ing => {
+            list.innerHTML += `
+                <label class="ingredient-option">
+                    ${ing}
+                    <input type="checkbox" checked value="${ing}">
+                </label>
+            `;
+        });
+        openModal('customizeModal');
+    }
+
+    function confirmAddToCart() {
+        const checkboxes = document.querySelectorAll('#ingredientsList input[type="checkbox"]');
+        let removedIngredients = [];
+        checkboxes.forEach(box => {
+            if (!box.checked) removedIngredients.push("بدون " + box.value);
+        });
+
+        let notes = removedIngredients.length > 0 ? removedIngredients.join("، ") : "";
+        
+        addToCart(currentProduct, 1, notes);
+        closeModal('customizeModal');
+    }
+
+    // === منطق الكيلو ===
+    function openWeightModal(id) {
+        currentProduct = products.kilo.find(p => p.id === id);
+        openModal('weightModal');
+    }
+
+    function addKiloToCart(weight) {
+        let weightLabel = weight < 1 ? (weight * 1000) + "g" : weight + " Kg";
+        let finalPrice = currentProduct.price * weight;
+        
+        // إنشاء كائن منتج جديد خاص بالسلة
+        let itemToAdd = {
+            ...currentProduct,
+            name: `${currentProduct.name} (${weightLabel})`,
+            price: finalPrice
+        };
+        
+        addToCart(itemToAdd, 1, "");
+        closeModal('weightModal');
+    }
+
+    // === منطق المشروبات (إضافة مباشرة) ===
+    function addToCartSimple(id) {
+        let prod = products.drinks.find(p => p.id === id);
+        addToCart(prod, 1, "");
+    }
+
+    // === وظائف السلة ===
+    function addToCart(product, qty, notes) {
+        cart.push({
+            name: product.name,
+            price: product.price,
+            qty: qty,
+            notes: notes
+        });
+        updateCartUI();
+        animateCartBtn();
+    }
+
+    function updateCartUI() {
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        
+        cartCount.innerText = cart.length;
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="color:#777; text-align:center; padding:20px;">السلة فارغة حالياً</p>';
+            cartTotal.innerText = "0 $";
+            return;
+        }
+
+        let html = "";
+        let total = 0;
+        
+        cart.forEach((item, index) => {
+            total += item.price;
+            html += `
+                <div class="cart-item">
+                    <div style="display:flex; justify-content:space-between;">
+                        <b>${item.name}</b>
+                        <span style="color:#2e7d32">$${item.price.toFixed(2)}</span>
+                    </div>
+                    ${item.notes ? `<span class="cart-notes">${item.notes}</span>` : ''}
+                    <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer; font-size:0.8em;">حذف</button>
+                </div>
+            `;
+        });
+        
+        cartItems.innerHTML = html;
+        cartTotal.innerText = "$" + total.toFixed(2);
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartUI();
+    }
+
+    function clearCart() {
+        cart = [];
+        updateCartUI();
+    }
+
+    function animateCartBtn() {
+        const btn = document.querySelector('.cart-float');
+        btn.classList.add('cart-added-animation');
+        setTimeout(() => btn.classList.remove('cart-added-animation'), 400);
+    }
+
+    // === إرسال لواتساب ===
+    function checkoutWhatsApp() {
+        if (cart.length === 0) {
+            alert("السلة فارغة!");
+            return;
+        }
+
+        let msg = "مرحباً ميدو، أريد طلب التالي:%0a%0a";
+        let total = 0;
+
+        cart.forEach(item => {
+            total += item.price;
+            msg += `- ${item.name}`;
+            if (item.notes) msg += ` (${item.notes})`;
+            msg += ` : $${item.price.toFixed(2)}%0a`;
+        });
+
+        msg += `%0a*المجموع الكلي: $${total.toFixed(2)}*`;
+        msg += "%0a%0aشكراً!";
+
+        // استبدل الرقم برقم الهاتف الحقيقي
+        window.open(`https://wa.me/96170000000?text=${msg}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
